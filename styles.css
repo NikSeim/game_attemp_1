@@ -7,6 +7,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh; /* Задаем высоту на весь экран */
+    overflow: hidden; /* Скрываем прокрутку */
 }
 
 #score {
@@ -67,7 +68,7 @@ body {
     background-color: #ddd;
     border: 2px solid #999;
     border-radius: 5px; /* Слегка скругленные углы */
-    margin: 0 25px; /* Отступ между кнопками */
+    margin: 0 10px; /* Отступ между кнопками */
     cursor: pointer;
     transition: background-color 0.2s ease, transform 0.2s ease; /* Плавный переход для фона и трансформации */
 }
@@ -86,7 +87,7 @@ body {
     background-color: #f1f1f1;
     display: flex;
     justify-content: space-around;
-    padding: 0px 0;
+    padding: 10px 0;
     width: 100%; /* Занимает 100% ширины */
 }
 
@@ -95,7 +96,7 @@ body {
     border: none;
     font-size: 18px;
     cursor: pointer;
-   
+    padding: 10px 20px;
     transition: background-color 0.2s ease;
 }
 
