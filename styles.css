@@ -21,11 +21,14 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 100%; /* Занимает 100% ширины */
 }
 
 #game-world {
-    width: 300px;
-    height: 300px;
+    width: 100%; /* Занимает 100% ширины */
+    height: 100%; /* Занимает 100% высоты */
+    max-width: 300px; /* Ограничение максимальной ширины */
+    max-height: 300px; /* Ограничение максимальной высоты */
     background-color: #fff;
     border: 2px solid #000;
     display: grid;
@@ -34,8 +37,8 @@ body {
 }
 
 .cell {
-    width: 100%;
-    height: 100%;
+    width: 100%; /* Занимает 100% ширины */
+    height: 100%; /* Занимает 100% высоты */
     border: 1px solid #ccc;
 }
 
@@ -47,17 +50,19 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%; /* Занимает 100% ширины */
 }
 
 .control-row {
     display: flex;
     justify-content: center;
     margin: 5px 0; /* Отступ между рядами кнопок */
+    width: 100%; /* Занимает 100% ширины */
 }
 
 .control-button {
-    width: 40px; /* Уменьшенная ширина */
-    height: 40px; /* Уменьшенная высота */
+    width: 50px; /* Фиксированная ширина кнопок */
+    height: 50px; /* Фиксированная высота кнопок */
     font-size: 20px; /* Уменьшенный размер шрифта */
     background-color: #ddd;
     border: 2px solid #999;
@@ -82,6 +87,7 @@ body {
     display: flex;
     justify-content: space-around;
     padding: 10px 0;
+    width: 100%; /* Занимает 100% ширины */
 }
 
 .tab-button {
