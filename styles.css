@@ -86,7 +86,7 @@ body {
     background-color: #f1f1f1;
     display: flex;
     justify-content: space-around;
-    padding: 10px 0;
+    padding: 0px 0;
     width: 100%; /* Занимает 100% ширины */
 }
 
