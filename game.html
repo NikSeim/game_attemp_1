@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Pixel World Explorer</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        #game-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        #game-world {
+            width: 300px;
+            height: 300px;
+            background-color: #fff;
+            border: 2px solid #000;
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+        }
+        .cell {
+            width: 100%;
+            height: 100%;
+            border: 1px solid #ccc;
+        }
+        .player { background-color: red; }
+        .coin { background-color: gold; }
+        #controls {
+            margin-top: 20px;
+        }
+        button {
+            font-size: 24px;
+            margin: 5px;
+            width: 50px;
+            height: 50px;
+        }
+        #score {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="game-world"></div>
+        <div id="controls">
+            <button id="up">⬆️</button><br>
+            <button id="left">⬅️</button>
+            <button id="right">➡️</button><br>
+            <button id="down">⬇️</button>
+        </div>
+        <div id="score">Coins: 0</div>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html>
