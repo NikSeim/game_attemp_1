@@ -1,0 +1,98 @@
+/* Стили для игры */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Задаем высоту на весь экран */
+}
+
+#score {
+    text-align: center;
+    font-size: 24px;
+    margin: 10px; /* Отступы */
+}
+
+#game-container {
+    flex: 1; /* Занимает все доступное пространство */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#game-world {
+    width: 300px;
+    height: 300px;
+    background-color: #fff;
+    border: 2px solid #000;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    margin-bottom: 20px; /* Отступ снизу */
+}
+
+.cell {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #ccc;
+}
+
+.player { background-color: red; }
+.coin { background-color: gold; }
+
+#controls {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.control-row {
+    display: flex;
+    justify-content: center;
+    margin: 5px 0; /* Отступ между рядами кнопок */
+}
+
+.control-button {
+    width: 40px; /* Уменьшенная ширина */
+    height: 40px; /* Уменьшенная высота */
+    font-size: 20px; /* Уменьшенный размер шрифта */
+    background-color: #ddd;
+    border: 2px solid #999;
+    border-radius: 5px; /* Слегка скругленные углы */
+    margin: 0 25px; /* Отступ между кнопками */
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease; /* Плавный переход для фона и трансформации */
+}
+
+.control-button:hover {
+    background-color: #ccc; /* Изменение цвета при наведении */
+    transform: scale(1.1); /* Увеличение кнопки при наведении */
+}
+
+.control-button:active {
+    background-color: #bbb; /* Изменение цвета при нажатии */
+}
+
+/* Стили для вкладок */
+.tab-bar {
+    background-color: #f1f1f1;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+}
+
+.tab-button {
+    background-color: transparent;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 10px 20px;
+    transition: background-color 0.2s ease;
+}
+
+.tab-button:hover {
+    background-color: #ddd; /* Изменение цвета при наведении */
+}
