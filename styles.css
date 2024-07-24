@@ -67,7 +67,7 @@ body {
     background-color: #ddd;
     border: 2px solid #999;
     border-radius: 5px; /* Слегка скругленные углы */
-    margin: 0 25px; /* Отступ между кнопками */
+    margin: 0 30px; /* Отступ между кнопками */
     cursor: pointer;
     transition: background-color 0.2s ease, transform 0.2s ease; /* Плавный переход для фона и трансформации */
 }
