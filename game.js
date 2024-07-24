@@ -1,5 +1,5 @@
 let tg = window.Telegram.WebApp;
-tg.expand();
+tg.expand(); // Расширяем приложение на весь экран
 
 const worldSize = 10; // Размер мира
 let playerX = 0; // Начальная позиция игрока по X
