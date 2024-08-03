@@ -9,14 +9,6 @@ body {
   flex-direction: column;
   height: 100vh;
 }
-
-#score {
-  text-align: center;
-  font-size: 24px;
-  margin: 10px;
-  color: white; /* Цвет текста для лучшей видимости на фоне */
-}
-
 #game-container {
   flex: 1; /* Занимает все доступное пространство */
   display: flex;
