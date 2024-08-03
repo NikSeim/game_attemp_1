@@ -40,7 +40,7 @@ function initWorld() {
         }
     }
     world[playerY][playerX] = 'player'; // Установка игрока
-    updateVisibility(); // Открываем клетки вокруг игрока
+    updateVisibility(true); // Открываем 8 клеток вокруг игрока
     renderWorld();
 }
 
@@ -50,9 +50,10 @@ function updateStepCounter() {
 }
 
 // Обновление видимости клеток
-function updateVisibility() {
-    for (let y = playerY - 1; y <= playerY + 1; y++) {
-        for (let x = playerX - 1; x <= playerX + 1; x++) {
+function updateVisibility(initial = false) {
+    let range = initial ? 1 : 1; // Если initial = true, открываем 8 клеток вокруг, иначе 4 клетки
+    for (let y = playerY - range; y <= playerY + range; y++) {
+        for (let x = playerX - range; x <= playerX + range; x++) {
             if (y >= 0 && y < originalWorldSize && x >= 0 && x < originalWorldSize) {
                 visibleCells[y][x] = true;
             }
@@ -94,7 +95,7 @@ function renderWorld() {
             gameWorld.appendChild(cell);
         }
     }
-    document.getElementById('score').textContent = `Монеты: ${coins}`; // Обновление счета
+    document.getElementById('token-count').textContent = coins; // Обновление счета
     updateStepCounter(); // Обновление счетчика шагов
 }
 
@@ -131,23 +132,41 @@ function movePlayer(dx, dy) {
 
 // Вкладки
 document.getElementById('game-tab').addEventListener('click', showGameTab);
-document.getElementById('leaderboard-tab').addEventListener('click', showLeaderboardTab);
 document.getElementById('friends-tab').addEventListener('click', showFriendsTab);
 document.getElementById('tasks-tab').addEventListener('click', showTasksTab);
 
-// Показать вкладку с игрой
-function showGameTab() {
-    document.getElementById('game-world').style.display = 'grid'; // Убедитесь, что стиль 'grid' установлен
-    document.getElementById('controls').style.display = 'flex'; // Показываем счетчик шагов и кнопку "New Game"
-    document.getElementById('new-game').style.display = 'block'; // Показываем кнопку "New Game"
-    if (!gameInitialized) {
-        loadProgress(); // Загружаем прогресс перед инициализацией
-        initWorld(); // Инициализация мира только при первом открытии
-        gameInitialized = true; // Устанавливаем флаг инициализации
-    } else {
-        renderWorld(); // Обновляем отображение, если игра уже инициализирована
-    }
+function hideAllTabs() {
+    document.getElementById('game-world').style.display = 'none';
+    document.getElementById('controls').style.display = 'none';
+    document.getElementById('new-game').style.display = 'none';
+    document.getElementById('score').style.display = 'none';
+    document.getElementById('friends-content').style.display = 'none';
+    document.getElementById('tasks-content').style.display = 'none';
 }
+
+function showGameTab() {
+    hideAllTabs();
+    document.getElementById('game-world').style.display = 'grid';
+    document.getElementById('controls').style.display = 'flex';
+    document.getElementById('new-game').style.display = 'block';
+    document.getElementById('score').style.display = 'flex';
+}
+
+function showFriendsTab() {
+    hideAllTabs();
+    document.getElementById('friends-content').style.display = 'block';
+}
+
+function showTasksTab() {
+    hideAllTabs();
+    document.getElementById('tasks-content').style.display = 'block';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    hideAllTabs(); // Скрываем все вкладки при загрузке страницы
+    showGameTab(); // Отображаем вкладку "Игра" по умолчанию
+});
+
 
 // Показать вкладку с таблицей лидеров
 function showLeaderboardTab() {
@@ -159,9 +178,17 @@ function showLeaderboardTab() {
 // Показать вкладку с друзьями
 function showFriendsTab() {
     document.getElementById('game-world').style.display = 'none';
-    document.getElementById('controls').style.display = 'none'; // Скрываем счетчик шагов и кнопку "New Game"
-    document.getElementById('score').textContent = 'Друзья'; // Пример
+    document.getElementById('controls').style.display = 'none'; // Скрываем кнопки управления и счетчик шагов
+    document.getElementById('new-game').style.display = 'none'; // Скрываем кнопку "New Game"
+    document.getElementById('score').style.display = 'none'; // Скрываем счетчик монет
+    document.getElementById('friends-content').style.display = 'block'; // Показываем содержимое вкладки "Друзья"
 }
+
+// Убедитесь, что при инициализации страницы скрыто содержимое вкладки "Друзья"
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('friends-content').style.display = 'none';
+});
+
 
 // Показать вкладку с заданиями
 function showTasksTab() {
@@ -183,3 +210,39 @@ document.getElementById('new-game').addEventListener('click', () => {
 // Инициализация мира при загрузке
 loadProgress(); // Загружаем прогресс при загрузке
 initWorld();
+
+function hideAllTabs() {
+    document.getElementById('game-world').style.display = 'none';
+    document.getElementById('controls').style.display = 'none';
+    document.getElementById('new-game').style.display = 'none';
+    document.getElementById('score').style.display = 'none';
+    document.getElementById('friends-content').style.display = 'none';
+    document.getElementById('tasks-content').style.display = 'none';
+}
+
+function showGameTab() {
+    hideAllTabs();
+    document.getElementById('game-world').style.display = 'grid';
+    document.getElementById('controls').style.display = 'flex';
+    document.getElementById('new-game').style.display = 'block';
+    document.getElementById('score').style.display = 'flex';
+}
+
+function showFriendsTab() {
+    hideAllTabs();
+    document.getElementById('friends-content').style.display = 'block';
+}
+
+function showTasksTab() {
+    hideAllTabs();
+    document.getElementById('tasks-content').style.display = 'block';
+}
+
+document.getElementById('game-tab').addEventListener('click', showGameTab);
+document.getElementById('friends-tab').addEventListener('click', showFriendsTab);
+document.getElementById('tasks-tab').addEventListener('click', showTasksTab);
+
+document.addEventListener('DOMContentLoaded', () => {
+    hideAllTabs(); // Скрываем все вкладки при загрузке страницы
+    showGameTab(); // Отображаем вкладку "Игра" по умолчанию
+});
