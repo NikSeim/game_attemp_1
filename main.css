@@ -1,4 +1,3 @@
-/* Стили для игры */
 body {
   margin: 0;
   padding: 0;
@@ -8,12 +7,27 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  overflow: hidden; /* Запрещаем прокрутку страницы */
 }
 
 #score {
   text-align: center;
   font-size: 24px;
   margin: 10px;
+  color: white; /* Цвет текста для лучшей видимости на фоне */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#token-image {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+#token-count {
+  font-size: 24px;
   color: white; /* Цвет текста для лучшей видимости на фоне */
 }
 
@@ -25,23 +39,6 @@ body {
   align-items: center;
   width: 100%; /* Занимает 100% ширины */
 }
-
-#step-counter-container {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-#step-image {
-  width: 40px; /* Размер изображения */
-  height: 40px;
-  margin-right: 10px; /* Отступ справа от изображения */
-}
-
-#step-counter {
-  font-size: 24px;
-}
-
 
 #game-world {
   position: relative; /* Для размещения слоя тумана поверх */
@@ -56,6 +53,7 @@ body {
   margin-bottom: 20px;
   border: 2px solid #000;
 }
+
 .cell {
   width: 100%;
   height: 100%;
@@ -104,32 +102,31 @@ body {
   height: 60%; /* Высота монеты */
   background-color: gold;
   border-radius: 50%; /* Закругленные края */
-  animation: spin 2s linear infinite; /* Анимация вращения, продолжительность изменена на 10 секунд */
+  animation: spin 2s linear infinite; /* Анимация вращения, продолжительность изменена на 2 секунды */
   transform-origin: 50% 50%; /* Центр вращения */
 }
 
 @keyframes spin {
   0% {
-    transform: rotateZ(0deg);
+      transform: rotateZ(0deg);
   }
   100% {
-    transform: rotateZ(360deg);
+      transform: rotateZ(360deg);
   }
 }
 
-
-
-
 #controls {
   display: flex;
+  justify-content: space-between; /* Размещаем элементы по краям контейнера */
   align-items: center;
-  margin-bottom: 20px; /* Отступ снизу */
+  width: 90%;
+  max-width: 500px;
+  margin-top: 10px;
 }
 
 #step-container {
   display: flex;
   align-items: center;
-  margin-right: 10px; /* Отступ справа от контейнера шагов */
 }
 
 #step-indicator {
@@ -171,4 +168,192 @@ body {
 
 .tab-button img:hover {
   transform: scale(1.1);
+}
+
+#friends-content {
+  text-align: center;
+  font-size: 24px;
+  color: white;
+  margin-top: 20px;
+  position: absolute;
+  top: 60px; /* Смещение вверх */
+  width: 100%;
+  z-index: 1; /* Обеспечиваем, что будет над панелью */
+}
+
+#friends-content h1 {
+  font-size: 32px; /* Увеличиваем размер текста */
+  margin-bottom: 20px;
+}
+
+.invite-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px; /* Отступ между прямоугольниками */
+}
+
+.invite-box {
+  display: flex;
+  align-items: center;
+  background-color: #00aaff;
+  border-radius: 15px;
+  padding: 15px;
+  width: 80%;
+  max-width: 600px;
+  color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.gift-image {
+  width: 50px;
+  height: 50px;
+  margin-right: 15px;
+}
+
+.invite-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.invite-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.invite-bonus {
+  font-size: 16px;
+  margin: 5px 0 0;
+}
+
+.bonus-amount {
+  color: yellow;
+}
+
+.extra-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px; /* Отступ сверху */
+  gap: 20px; /* Отступ между кнопками */
+}
+
+.long-button {
+  background-color: #00aaff;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  padding: 10px 20px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.square-button {
+  background-color: #00aaff;
+  border: none;
+  border-radius: 15px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.copy-image {
+  width: 30px;
+  height: 30px;
+}
+
+#tasks-content {
+  padding-top: 10px; /* Уменьшаем верхний отступ */
+  overflow-y: auto; /* Разрешаем вертикальную прокрутку */
+  text-align: center;
+  font-size: 24px;
+  color: white;
+  margin-top: 20px;
+  width: 100%;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#tasks-content img.tasks-icon {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 5px; /* Уменьшаем отступ снизу */
+}
+
+#tasks-content h1 {
+  font-size: 32px;
+  margin-bottom: 5px; /* Уменьшаем отступ снизу */
+}
+
+#tasks-content p {
+  font-size: 16px;
+  margin-bottom: 10px; /* Уменьшаем отступ снизу */
+}
+
+.tasks-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  max-height: 300px; /* Высота для отображения 3 задач */
+  overflow-y: auto; /* Прокрутка по вертикали */
+}
+
+.task-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #222;
+  border-radius: 10px;
+  padding: 10px;
+  width: 90%;
+  max-width: 500px;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 50px;
+}
+
+.task-info {
+  display: flex;
+  align-items: center;
+}
+
+.task-icon {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.task-title-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* Выравнивание текста по низу бокса */
+}
+
+.task-title {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.task-subtitle {
+  font-size: 12px;
+  margin: 3px 0 0;
+}
+
+.claim-button {
+  background-color: #00aaff;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 5px 10px;
+  font-size: 12px;
+  cursor: pointer;
 }
