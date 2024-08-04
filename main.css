@@ -1,20 +1,20 @@
 body {
   margin: 0;
   padding: 0;
-  background: url('image/lilnigga.gif') no-repeat center center fixed;
+  background: url('../image/lilnigga.gif') no-repeat center center fixed;
   background-size: cover;
   font-family: Arial, sans-serif;
   display: flex;
   flex-direction: column;
   height: 100vh;
-  overflow: hidden; /* Запрещаем прокрутку страницы */
+  overflow: hidden;
 }
 
 #score {
   text-align: center;
   font-size: 24px;
   margin: 10px;
-  color: white; /* Цвет текста для лучшей видимости на фоне */
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -28,28 +28,28 @@ body {
 
 #token-count {
   font-size: 24px;
-  color: white; /* Цвет текста для лучшей видимости на фоне */
+  color: white;
 }
 
 #game-container {
-  flex: 1; /* Занимает все доступное пространство */
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%; /* Занимает 100% ширины */
+  width: 100%;
 }
 
 #game-world {
-  position: relative; /* Для размещения слоя тумана поверх */
-  width: 90%; /* Увеличиваем ширину */
-  height: 90%; /* Увеличиваем высоту */
-  max-width: 500px; /* Ограничение максимальной ширины */
-  max-height: 500px; /* Ограничение максимальной высоты */
-  background: url('image/grace.jpg') no-repeat center center;
-  background-size: cover; /* Растягиваем изображение на весь фон */
+  position: relative;
+  width: 90%;
+  height: 90%;
+  max-width: 500px;
+  max-height: 500px;
+  background: url('../image/grace.jpg') no-repeat center center;
+  background-size: cover;
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* Уменьшаем количество колонок */
+  grid-template-columns: repeat(5, 1fr);
   margin-bottom: 20px;
   border: 2px solid #000;
 }
@@ -58,7 +58,7 @@ body {
   width: 100%;
   height: 100%;
   border: 1px solid #ccc;
-  box-sizing: border-box; /* Учитываем границы в размер */
+  box-sizing: border-box;
   position: relative;
   display: flex;
   justify-content: center;
@@ -71,19 +71,19 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: url('image/fog.gif') no-repeat center center;
+  background: url('../image/fog.gif') no-repeat center center;
   background-size: cover;
-  z-index: 2; /* Верхний слой */
-  display: none; /* По умолчанию скрыто */
+  z-index: 2;
+  display: none;
 }
 
 .player {
   position: absolute;
-  width: 70%; /* Устанавливаем ширину круга */
-  height: 70%; /* Устанавливаем высоту круга */
+  width: 70%;
+  height: 70%;
   background-color: transparent;
-  border-radius: 50%; /* Скругленные углы, чтобы сделать круг */
-  overflow: hidden; /* Скрываем содержимое за границами круга */
+  border-radius: 50%;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -93,17 +93,17 @@ body {
 .player img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Обеспечивает сохранение соотношения сторон изображения */
+  object-fit: cover;
 }
 
 .coin {
   position: absolute;
-  width: 5%; /* Ширина монеты */
-  height: 60%; /* Высота монеты */
+  width: 5%;
+  height: 60%;
   background-color: gold;
-  border-radius: 50%; /* Закругленные края */
-  animation: spin 2s linear infinite; /* Анимация вращения, продолжительность изменена на 2 секунды */
-  transform-origin: 50% 50%; /* Центр вращения */
+  border-radius: 50%;
+  animation: spin 2s linear infinite;
+  transform-origin: 50% 50%;
 }
 
 @keyframes spin {
@@ -117,7 +117,7 @@ body {
 
 #controls {
   display: flex;
-  justify-content: space-between; /* Размещаем элементы по краям контейнера */
+  justify-content: space-between;
   align-items: center;
   width: 90%;
   max-width: 500px;
@@ -130,14 +130,14 @@ body {
 }
 
 #step-indicator {
-  width: 50px; /* Ширина изображения индикатора шагов */
-  height: 50px; /* Высота изображения индикатора шагов */
+  width: 50px;
+  height: 50px;
 }
 
 #step-counter {
   font-size: 20px;
-  margin-left: 10px; /* Отступ слева от счетчика шагов */
-  color: white; /* Цвет текста для лучшей видимости на фоне */
+  margin-left: 10px;
+  color: white;
 }
 
 #new-game {
@@ -176,13 +176,13 @@ body {
   color: white;
   margin-top: 20px;
   position: absolute;
-  top: 60px; /* Смещение вверх */
+  top: 60px;
   width: 100%;
-  z-index: 1; /* Обеспечиваем, что будет над панелью */
+  z-index: 1;
 }
 
 #friends-content h1 {
-  font-size: 32px; /* Увеличиваем размер текста */
+  font-size: 32px;
   margin-bottom: 20px;
 }
 
@@ -190,7 +190,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px; /* Отступ между прямоугольниками */
+  gap: 20px;
 }
 
 .invite-box {
@@ -236,12 +236,12 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px; /* Отступ сверху */
-  gap: 20px; /* Отступ между кнопками */
+  margin-top: 20px;
+  gap: 20px;
 }
 
 .long-button {
-  background-color: #00aaff;
+  background-color: rgb(0, 170, 255);
   color: white;
   border: none;
   border-radius: 15px;
@@ -268,8 +268,8 @@ body {
 }
 
 #tasks-content {
-  padding-top: 10px; /* Уменьшаем верхний отступ */
-  overflow-y: auto; /* Разрешаем вертикальную прокрутку */
+  padding-top: 10px;
+  overflow-y: auto;
   text-align: center;
   font-size: 24px;
   color: white;
@@ -284,17 +284,17 @@ body {
 #tasks-content img.tasks-icon {
   width: 80px;
   height: 80px;
-  margin-bottom: 5px; /* Уменьшаем отступ снизу */
+  margin-bottom: 5px;
 }
 
 #tasks-content h1 {
   font-size: 32px;
-  margin-bottom: 5px; /* Уменьшаем отступ снизу */
+  margin-bottom: 5px;
 }
 
 #tasks-content p {
   font-size: 16px;
-  margin-bottom: 10px; /* Уменьшаем отступ снизу */
+  margin-bottom: 10px;
 }
 
 .tasks-container {
@@ -302,8 +302,8 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 5px;
-  max-height: 300px; /* Высота для отображения 3 задач */
-  overflow-y: auto; /* Прокрутка по вертикали */
+  max-height: 300px;
+  overflow-y: auto;
 }
 
 .task-box {
@@ -334,7 +334,7 @@ body {
 .task-title-container {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; /* Выравнивание текста по низу бокса */
+  justify-content: flex-end;
 }
 
 .task-title {

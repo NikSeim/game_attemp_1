@@ -1,70 +1,107 @@
 let tg = window.Telegram.WebApp;
-tg.expand(); // Расширяем приложение на весь экран
+tg.expand();
 
-const originalWorldSize = 20; // Исходный размер мира
-const displayWorldSize = 5; // Размер отображаемого мира
-let playerX = Math.floor(originalWorldSize / 2); // Начальная позиция игрока по X
-let playerY = Math.floor(originalWorldSize / 2); // Начальная позиция игрока по Y
-let coins = 0; // Счетчик монет
-let steps = 150; // Счетчик шагов
-let world = []; // Игровой мир
-let visibleCells = Array.from({ length: originalWorldSize }, () => Array(originalWorldSize).fill(false)); // Видимые клетки
-let gameInitialized = false; // Флаг для проверки инициализации игры
+const originalWorldSize = 20;
+const displayWorldSize = 5;
+let playerX = Math.floor(originalWorldSize / 2);
+let playerY = Math.floor(originalWorldSize / 2);
+let coins = 0;
+let steps = 150;
+let world = [];
+let visibleCells = Array.from({ length: originalWorldSize }, () => Array(originalWorldSize).fill(false));
+let gameInitialized = false;
+let preMiniGameState = null; // Variable to store game state before mini game
+let returningFromMiniGame = false; // Variable to track if returning from mini game
+let coinPosition = { x: 0, y: 0 }; // Variable to store the position of the collected coin
 
-// Загрузка прогресса
-function loadProgress() {
-    const savedCoins = localStorage.getItem('coins');
-    const savedSteps = localStorage.getItem('steps');
-    if (savedCoins) {
-        coins = parseInt(savedCoins, 10);
-    }
-    if (savedSteps) {
-        steps = parseInt(savedSteps, 10);
-    }
+function saveGameState() {
+    const gameState = {
+        playerX,
+        playerY,
+        coins,
+        steps,
+        world,
+        visibleCells,
+        coinPosition
+    };
+    localStorage.setItem('gameState', JSON.stringify(gameState));
 }
 
-// Сохранение прогресса
-function saveProgress() {
-    localStorage.setItem('coins', coins);
-    localStorage.setItem('steps', steps);
-}
+function loadGameState() {
+    const savedGameState = localStorage.getItem('gameState');
+    if (savedGameState) {
+        const gameState = JSON.parse(savedGameState);
+        playerX = gameState.playerX;
+        playerY = gameState.playerY;
+        coins = gameState.coins;
+        steps = gameState.steps;
+        world = gameState.world;
+        visibleCells = gameState.visibleCells;
+        coinPosition = gameState.coinPosition;
 
-// Инициализация мира
-function initWorld() {
-    world = Array.from({ length: originalWorldSize }, () => Array(originalWorldSize).fill(0));
-    for (let i = 0; i < 50; i++) { // Увеличиваем количество монет
-        let x = Math.floor(Math.random() * originalWorldSize);
-        let y = Math.floor(Math.random() * originalWorldSize);
-        if (world[y][x] === 0) {
-            world[y][x] = 'coin'; // Размещение монеты
+        if (returningFromMiniGame) {
+            // Place the player on the position of the collected coin
+            playerX = coinPosition.x;
+            playerY = coinPosition.y;
+            steps--; // Deduct one step when returning from mini game
+            returningFromMiniGame = false; // Reset the flag
         }
+
+        // Ensure the player's position is updated in the world
+        world[playerY][playerX] = 'player';
+        
+        updateVisibility(); // Update visibility after loading the state
+        renderWorld(); // Render the game world after loading the state
     }
-    world[playerY][playerX] = 'player'; // Установка игрока
-    updateVisibility(true); // Открываем 8 клеток вокруг игрока
-    renderWorld();
 }
 
-// Обновление счетчика шагов
+
+function savePreMiniGameState() {
+    preMiniGameState = {
+        playerX,
+        playerY,
+        coins,
+        steps,
+        world: JSON.parse(JSON.stringify(world)), // Deep copy of the world array
+        visibleCells: JSON.parse(JSON.stringify(visibleCells)), // Deep copy of visibleCells array
+        coinPosition: { ...coinPosition } // Save coin position
+    };
+}
+
+function initWorld(loadSavedState = true) {
+    if (loadSavedState) {
+        loadGameState();
+    }
+    if (!gameInitialized || !loadSavedState) {
+        world = Array.from({ length: originalWorldSize }, () => Array(originalWorldSize).fill(0));
+        for (let i = 0; i < 50; i++) {
+            let x = Math.floor(Math.random() * originalWorldSize);
+            let y = Math.floor(Math.random() * originalWorldSize);
+            if (world[y][x] === 0) world[y][x] = 'coin';
+        }
+        world[playerY][playerX] = 'player';
+        updateVisibility(true);
+        renderWorld();
+        gameInitialized = true;
+    }
+}
+
 function updateStepCounter() {
     document.getElementById('step-counter').textContent = `${steps}/150`;
 }
 
-// Обновление видимости клеток
 function updateVisibility(initial = false) {
-    let range = initial ? 1 : 1; // Если initial = true, открываем 8 клеток вокруг, иначе 4 клетки
+    let range = initial ? 1 : 1;
     for (let y = playerY - range; y <= playerY + range; y++) {
         for (let x = playerX - range; x <= playerX + range; x++) {
-            if (y >= 0 && y < originalWorldSize && x >= 0 && x < originalWorldSize) {
-                visibleCells[y][x] = true;
-            }
+            if (y >= 0 && y < originalWorldSize && x >= 0 && x < originalWorldSize) visibleCells[y][x] = true;
         }
     }
 }
 
-// Отображение мира
 function renderWorld() {
     const gameWorld = document.getElementById('game-world');
-    gameWorld.innerHTML = ''; // Очистка контейнера
+    gameWorld.innerHTML = '';
 
     const startX = Math.max(0, Math.min(playerX - Math.floor(displayWorldSize / 2), originalWorldSize - displayWorldSize));
     const startY = Math.max(0, Math.min(playerY - Math.floor(displayWorldSize / 2), originalWorldSize - displayWorldSize));
@@ -77,60 +114,70 @@ function renderWorld() {
                 const playerDiv = document.createElement('div');
                 playerDiv.classList.add('player');
                 const img = document.createElement('img');
-                img.src = 'image/xyeta.jpg'; // Устанавливаем путь к изображению
-                playerDiv.appendChild(img); // Добавляем изображение внутрь элемента игрока
-                cell.appendChild(playerDiv); // Добавляем элемент игрока в клетку
+                img.src = 'image/xyeta.jpg';
+                playerDiv.appendChild(img);
+                cell.appendChild(playerDiv);
             } else if (world[y][x] === 'coin') {
                 const coinDiv = document.createElement('div');
                 coinDiv.classList.add('coin');
-                cell.appendChild(coinDiv); // Добавляем элемент монеты в клетку
+                cell.appendChild(coinDiv);
             }
             const fog = document.createElement('div');
             fog.classList.add('fog');
-            if (!visibleCells[y][x]) {
-                fog.style.display = 'block';
-            }
+            if (!visibleCells[y][x]) fog.style.display = 'block';
             cell.appendChild(fog);
-            cell.addEventListener('click', () => handleCellClick(x, y)); // Добавляем обработчик клика
+            cell.addEventListener('click', () => handleCellClick(x, y));
             gameWorld.appendChild(cell);
         }
     }
-    document.getElementById('token-count').textContent = coins; // Обновление счета
-    updateStepCounter(); // Обновление счетчика шагов
+    document.getElementById('token-count').textContent = coins;
+    updateStepCounter();
 }
 
-// Обработчик клика по ячейке
 function handleCellClick(x, y) {
     const dx = x - playerX;
     const dy = y - playerY;
-
     if (steps > 0 && ((Math.abs(dx) === 1 && dy === 0) || (dx === 0 && Math.abs(dy) === 1))) {
         movePlayer(dx, dy);
     }
 }
 
-// Перемещение игрока
 function movePlayer(dx, dy) {
     let newX = playerX + dx;
     let newY = playerY + dy;
     if (newX >= 0 && newX < originalWorldSize && newY >= 0 && newY < originalWorldSize) {
         if (world[newY][newX] === 'coin') {
-            coins++; // Увеличение счета при сборе монеты
-            world[newY][newX] = 0; // Удаление монеты из мира
-            saveProgress(); // Сохранение прогресса при сборе монеты
+            coins++; // Increase coins by 1 on collecting a coin
+            coinPosition = { x: newX, y: newY }; // Save the position of the collected coin
+            world[playerY][playerX] = 0; // Remove player from the old position
+            playerX = newX; // Move player to the coin's position
+            playerY = newY;
+            world[playerY][playerX] = 'player'; // Place player on the new position
+            savePreMiniGameState(); // Save the pre-mini game state before launching the mini game
+            world[newY][newX] = 0; // Remove the coin from the world
+            returningFromMiniGame = true; // Set the flag indicating returning from mini game
+            saveGameState(); // Save the game state before launching the mini game
+            // Launch the first mini game when a coin is collected
+            launchMiniGame();
+        } else {
+            world[playerY][playerX] = 0;
+            playerX = newX;
+            playerY = newY;
+            world[playerY][playerX] = 'player';
+            steps--;
+            updateVisibility();
+            saveGameState(); // Save the game state after player moves
+            renderWorld();
         }
-        world[playerY][playerX] = 0; // Удаление игрока из старой позиции
-        playerX = newX;
-        playerY = newY;
-        world[playerY][playerX] = 'player'; // Установка игрока на новую позицию
-        steps--; // Уменьшение шагов
-        updateVisibility(); // Обновление видимости клеток
-        saveProgress(); // Сохранение прогресса при перемещении
-        renderWorld(); // Обновление отображения мира
     }
 }
 
-// Вкладки
+// Function to launch the first mini game
+function launchMiniGame() {
+    const miniGameUrl = `html/game1.html`; // Always navigate to the first mini game
+    window.location.href = miniGameUrl;
+}
+
 document.getElementById('game-tab').addEventListener('click', showGameTab);
 document.getElementById('friends-tab').addEventListener('click', showFriendsTab);
 document.getElementById('tasks-tab').addEventListener('click', showTasksTab);
@@ -163,86 +210,21 @@ function showTasksTab() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    hideAllTabs(); // Скрываем все вкладки при загрузке страницы
-    showGameTab(); // Отображаем вкладку "Игра" по умолчанию
+    loadGameState(); // Load the game state when the page is loaded
+    hideAllTabs();
+    showGameTab();
 });
 
-
-// Показать вкладку с таблицей лидеров
-function showLeaderboardTab() {
-    document.getElementById('game-world').style.display = 'none';
-    document.getElementById('controls').style.display = 'none'; // Скрываем счетчик шагов и кнопку "New Game"
-    document.getElementById('score').textContent = 'Таблица лидеров'; // Пример
-}
-
-// Показать вкладку с друзьями
-function showFriendsTab() {
-    document.getElementById('game-world').style.display = 'none';
-    document.getElementById('controls').style.display = 'none'; // Скрываем кнопки управления и счетчик шагов
-    document.getElementById('new-game').style.display = 'none'; // Скрываем кнопку "New Game"
-    document.getElementById('score').style.display = 'none'; // Скрываем счетчик монет
-    document.getElementById('friends-content').style.display = 'block'; // Показываем содержимое вкладки "Друзья"
-}
-
-// Убедитесь, что при инициализации страницы скрыто содержимое вкладки "Друзья"
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('friends-content').style.display = 'none';
-});
-
-
-// Показать вкладку с заданиями
-function showTasksTab() {
-    document.getElementById('game-world').style.display = 'none';
-    document.getElementById('controls').style.display = 'none'; // Скрываем счетчик шагов и кнопку "New Game"
-    document.getElementById('score').textContent = 'Задания'; // Пример
-}
-
-// Обработчик для кнопки "New Game"
 document.getElementById('new-game').addEventListener('click', () => {
-    playerX = Math.floor(originalWorldSize / 2); // Сброс позиции игрока
+    localStorage.removeItem('gameState'); // Clear saved game state
+    preMiniGameState = null; // Clear pre-mini game state
+    returningFromMiniGame = false; // Reset the flag
+    playerX = Math.floor(originalWorldSize / 2);
     playerY = Math.floor(originalWorldSize / 2);
-    steps = 150; // Сброс счетчика шагов
-    visibleCells = Array.from({ length: originalWorldSize }, () => Array(originalWorldSize).fill(false)); // Сброс видимых клеток
-    gameInitialized = false; // Сброс флага инициализации
-    initWorld(); // Инициализация нового игрового мира
+    steps = 150;
+    visibleCells = Array.from({ length: originalWorldSize }, () => Array(originalWorldSize).fill(false));
+    gameInitialized = false;
+    initWorld(false); // Initialize a new game
 });
 
-// Инициализация мира при загрузке
-loadProgress(); // Загружаем прогресс при загрузке
 initWorld();
-
-function hideAllTabs() {
-    document.getElementById('game-world').style.display = 'none';
-    document.getElementById('controls').style.display = 'none';
-    document.getElementById('new-game').style.display = 'none';
-    document.getElementById('score').style.display = 'none';
-    document.getElementById('friends-content').style.display = 'none';
-    document.getElementById('tasks-content').style.display = 'none';
-}
-
-function showGameTab() {
-    hideAllTabs();
-    document.getElementById('game-world').style.display = 'grid';
-    document.getElementById('controls').style.display = 'flex';
-    document.getElementById('new-game').style.display = 'block';
-    document.getElementById('score').style.display = 'flex';
-}
-
-function showFriendsTab() {
-    hideAllTabs();
-    document.getElementById('friends-content').style.display = 'block';
-}
-
-function showTasksTab() {
-    hideAllTabs();
-    document.getElementById('tasks-content').style.display = 'block';
-}
-
-document.getElementById('game-tab').addEventListener('click', showGameTab);
-document.getElementById('friends-tab').addEventListener('click', showFriendsTab);
-document.getElementById('tasks-tab').addEventListener('click', showTasksTab);
-
-document.addEventListener('DOMContentLoaded', () => {
-    hideAllTabs(); // Скрываем все вкладки при загрузке страницы
-    showGameTab(); // Отображаем вкладку "Игра" по умолчанию
-});
